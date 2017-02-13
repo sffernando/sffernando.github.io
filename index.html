@@ -69,6 +69,38 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-ios-touch-event~" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/13/ios-touch-event~/" class="article-date">
+  <time datetime="2017-02-13T09:41:15.000Z" itemprop="datePublished">2017-02-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/02/13/ios-touch-event~/" data-id="ciz3y2czw0000w52wfcc6v2uj" class="article-share-link" data-share="baidu" data-title="">分享到</a>
+      
+
+      
+        <a href="http://yoursite.com/2017/02/13/ios-touch-event~/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ios-touch-event" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/02/10/ios-touch-event/" class="article-date">
@@ -149,13 +181,17 @@
 <p><a href="http://smnh.me/hit-testing-in-ios/" target="_blank" rel="external">这篇文章</a>中有更加详细的解释，我先引用这篇文章中的两张图：<br><img src="http://smnh.me/images/hit-test-depth-first-traversal.png" alt="图3."><br><img src="http://smnh.me/images/hit-test-flowchart.png" alt="图4."></p>
 <h3 id="hitTest的粗略应用"><a href="#hitTest的粗略应用" class="headerlink" title="hitTest的粗略应用"></a>hitTest的粗略应用</h3><h4 id="一-放大点击区域"><a href="#一-放大点击区域" class="headerlink" title="一. 放大点击区域"></a>一. 放大点击区域</h4><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 自定义view</span></div><div class="line"><span class="comment">// 重写下面的两个方法</span></div><div class="line"><span class="comment">// 注:在controller中，蓝色view是self，灰色view是蓝色view下面的shapeLayer</span></div><div class="line"></div><div class="line">- (<span class="built_in">BOOL</span>)pointInside:(<span class="built_in">CGPoint</span>)point withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    <span class="built_in">CGRect</span> touchRect = <span class="built_in">CGRectInset</span>(<span class="keyword">self</span>.bounds, <span class="number">-20</span>, <span class="number">-20</span>);</div><div class="line">    <span class="keyword">return</span> <span class="built_in">CGRectContainsPoint</span>(touchRect, point);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="built_in">UIView</span> *)hitTest:(<span class="built_in">CGPoint</span>)point withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    <span class="keyword">if</span> (!<span class="keyword">self</span>.userInteractionEnabled) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.hidden) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.alpha &lt;= <span class="number">0.01</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="built_in">CGRect</span> touchRect = <span class="built_in">CGRectInset</span>(<span class="keyword">self</span>.bounds, <span class="number">-20</span>, <span class="number">-20</span>);</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">CGRectContainsPoint</span>(touchRect, point)) &#123;</div><div class="line">        <span class="keyword">if</span> (<span class="built_in">CGRectContainsPoint</span>(<span class="keyword">self</span>.bounds, point)) &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"点击了蓝色区域"</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="built_in">NSLog</span>(<span class="string">@"点击了灰色区域"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span> (<span class="built_in">UIView</span> *subview <span class="keyword">in</span> [<span class="keyword">self</span>.subviews reverseObjectEnumerator]) &#123;</div><div class="line">            <span class="built_in">CGPoint</span> convertedPoint = [subview convertPoint:point fromView:<span class="keyword">self</span>];</div><div class="line">            <span class="built_in">UIView</span> *hitTestView = [subview hitTest:convertedPoint withEvent:event];</div><div class="line">            <span class="keyword">if</span> (hitTestView) &#123;</div><div class="line">                <span class="keyword">return</span> hitTestView;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><a href="https://github.com/sffernando/demos/tree/master/TouchesDemo" target="_blank" rel="external">这里</a>有demo</p>
+<h4 id="二-把事件传递给它下面的view"><a href="#二-把事件传递给它下面的view" class="headerlink" title="二. 把事件传递给它下面的view"></a>二. 把事件传递给它下面的<code>view</code></h4><p>有的时候对于一个视图忽略触摸事件并传递给下面的视图是很重要的。例如，假设一个透明的视图覆盖在应用内所有视图的最上面。覆盖层有子视图应该相应触摸事件的一些控件和按钮。但是触摸覆盖层的其他区域应该传递给覆盖层下面的视图。为了完成这个行为，覆盖层需要覆盖<code>hitTest:withEvent:</code>方法来返回包含触摸点的子视图中的一个，然后其他情况返回<code>nil</code>，包括覆盖层包含触摸点的情况：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIView</span> *)hitTest:(<span class="built_in">CGPoint</span>)point withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    <span class="built_in">UIView</span> *hitTestView = [<span class="keyword">super</span> hitTest:point withEvent:event];</div><div class="line">    <span class="keyword">if</span> (hitTestView == <span class="keyword">self</span>) &#123;</div><div class="line">        hitTestView = <span class="literal">nil</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> hitTestView;</div><div class="line">    <span class="comment">// 这里直接返回nil的话会把所有的子试图的触摸事件全部忽略了</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="三-传递触摸事件给子视图"><a href="#三-传递触摸事件给子视图" class="headerlink" title="三. 传递触摸事件给子视图"></a>三. 传递触摸事件给子视图</h4><p><code>e.g.</code>有时候在<code>scrollView</code>中做翻页浏览的时候，比如一般<code>app</code>首页的轮播图，为了做出一些动画效果就像滑动的时候不同的子试图会有放大缩小的效果，这时候<code>scrollView</code>的<code>width</code>小于屏幕的宽度，所以在触摸两端距离屏幕的空白区域的时候，<code>scrollView</code>不会响应滑动触摸，会影响体验，这时候<code>hitTest:withEvent:</code>派上用场：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在自定义的轮播图view中重写hitTest:withEvent:</span></div><div class="line"><span class="comment">// 注： scrollView是作为subView存在的</span></div><div class="line"></div><div class="line">- (<span class="built_in">UIView</span> *)hitTest:(<span class="built_in">CGPoint</span>)point withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    <span class="built_in">UIView</span> *hitTestView = [<span class="keyword">super</span> hitTest:point withEvent:event];</div><div class="line">    <span class="keyword">if</span> (hitTestView) &#123;</div><div class="line">        hitTestView = <span class="keyword">self</span>.scrollView;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> hitTestView;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>&lt;未完，准备demo中…&gt;</strong></p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event/" data-id="ciz3ogzc400003u2w4gkmu2ya" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event/" data-id="ciz3y2d0h0001w52wxxk74mf1" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链">分享到</a>
       
 
       
@@ -208,7 +244,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="ciz3ogzc800013u2wekn7bodc" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="ciz3y2d0j0002w52w56s8pe68" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
       
 
       
@@ -252,7 +288,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -262,6 +298,10 @@
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/02/13/ios-touch-event~/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2017/02/10/ios-touch-event/">iOS触摸事件的分发和响应链</a>
