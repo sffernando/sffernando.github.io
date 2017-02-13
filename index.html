@@ -122,7 +122,18 @@
 <h2 id="触摸事件的传递"><a href="#触摸事件的传递" class="headerlink" title="触摸事件的传递"></a>触摸事件的传递</h2><p><strong>触摸事件，它是包含着一组触摸信息(<code>touches</code>)的<code>UIEvent</code>的对象。</strong> <em>通常，<code>UIApplication</code>的单例实例获取到<code>Event Queue</code>中的第一个时间之后会将改事件送到<code>app</code>的<code>key window object</code> —&gt; <code>keyWindow</code>，<code>keyWindow</code>会根据事件的类型找到初始的对象，并将事件传给给对象去处理</em>。</p>
 <p>对于触摸事件，窗口对象首先尝试将事件传递到有接收到触摸的视图。 该视图称为命中测试(<code>hit-test</code>)视图。 找到命中测试(<code>hit-test</code>)视图的过程称为命中测试(<code>hit-testing</code>)。这些事件路径的最终目标是找到一个可以处理和响应事件的对象。 因此，UIKit首先将事件发送到最适合处理事件的对象。 <em>对于触摸事件，该对象是命中测试视图，对于其他事件，该对象是第一个响应者</em>。</p>
 <p><img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png" alt="图2. Hit-testing returns the subview that was touched"></p>
-<h3 id="Hit-Testing返回触摸发生的视图"><a href="#Hit-Testing返回触摸发生的视图" class="headerlink" title="Hit-Testing返回触摸发生的视图"></a>Hit-Testing返回触摸发生的视图</h3><p>iOS使用<code>hit-testing</code>来查找被触摸的视图。<code>hit-testing</code>需要检查触摸是否在所有相关视图对象的边界内。如果是，它会递归检查视图的所有子视图。视图层级中包含触摸点的最低的视图成为<code>hit-test view</code>(命中测试视图)。<strong>iOS确定<code>hit-test view</code>后，它会将触摸事件传递到该视图进行处理</strong>。</p>
+<h3 id="Hit-Testing返回触摸发生的视图"><a href="#Hit-Testing返回触摸发生的视图" class="headerlink" title="Hit-Testing返回触摸发生的视图"></a>Hit-Testing返回触摸发生的视图</h3><blockquote>
+<p><code>hitTest:withEvent:</code>方法首先检查视图是否允许接收触摸事件。视图允许接收触摸事件的条件是:</p>
+<blockquote>
+<ul>
+<li>视图不是隐藏的: <code>self.hidden == NO</code></li>
+<li>视图是允许交互的: <code>self.userInteractionEnabled == YES</code></li>
+<li>视图透明度大于<code>0.01</code>: <code>self.alpha &gt; 0.01</code></li>
+<li>视图包含这个点: <code>pointInside:withEvent: == YES</code></li>
+</ul>
+</blockquote>
+</blockquote>
+<p>iOS使用<code>hit-testing</code>来查找被触摸的视图。<code>hit-testing</code>需要检查触摸是否在所有相关视图对象的边界内。如果是，它会递归检查视图的所有子视图。视图层级中包含触摸点的最低的视图成为<code>hit-test view</code>(命中测试视图)。<strong>iOS确定<code>hit-test view</code>后，它会将触摸事件传递到该视图进行处理</strong>。</p>
 <p>如上图2所示，假设用户触摸图中的<code>View E</code>。iOS通过按照如下顺序检查子视图来查找<code>hit-test view</code>:</p>
 <ul>
 <li>触摸在<code>View A</code>的边界内，因此它检查子视图<code>View B</code>和<code>View C</code>.</li>
@@ -135,13 +146,14 @@
 <blockquote>
 <p>注意：一个触摸对象的生命期与其命中测试视图(<code>hit-test view</code>)相关联，即使触摸稍后移动到视图外。</p>
 </blockquote>
+<p><a href="http://smnh.me/hit-testing-in-ios/" target="_blank" rel="external">这篇文章</a>中有更加详细的解释，我先引用这篇文章中的两张图：<br><img src="http://smnh.me/images/hit-test-depth-first-traversal.png" alt="图3."><br><img src="http://smnh.me/images/hit-test-flowchart.png" alt="图4."></p>
 <p><strong>&lt;未完，准备demo中…&gt;</strong></p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event/" data-id="ciyzjzx7g0001232w4pjz3ipv" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event/" data-id="ciz3gorux0001nt2wj1z8121p" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链">分享到</a>
       
 
       
@@ -194,7 +206,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="ciyzjzx7b0000232w9xotz5o6" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="ciz3gorut0000nt2wezll5jhr" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
       
 
       
