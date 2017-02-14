@@ -4,14 +4,14 @@
 <head>
   <meta charset="utf-8">
   
-  <title>iOS触摸事件的分发和响应链 | Fernando&#39;s notes</title>
+  <title>iOS触摸事件的分发和响应链(一) | Fernando&#39;s notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前言iOS中的事件在官网可以看到分为三类 : 
  但是在iOS9之后又新增了3D Touch事件, 在UIEvent.h中可以看到事件定义的枚举：
  123456 typedef NS_ENUM(NSInteger, UIEventType) &amp;#123;    UIEventTypeTouches,    UIEventTypeMotion,    UIEventTypeRemoteContro">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS触摸事件的分发和响应链">
-<meta property="og:url" content="http://yoursite.com/2017/02/10/ios-touch-event/index.html">
+<meta property="og:title" content="iOS触摸事件的分发和响应链(一)">
+<meta property="og:url" content="http://yoursite.com/2017/02/10/ios-touch-event-1/index.html">
 <meta property="og:site_name" content="Fernando's notes">
 <meta property="og:description" content="前言iOS中的事件在官网可以看到分为三类 : 
  但是在iOS9之后又新增了3D Touch事件, 在UIEvent.h中可以看到事件定义的枚举：
@@ -20,10 +20,9 @@
 <meta property="og:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png">
 <meta property="og:image" content="http://smnh.me/images/hit-test-depth-first-traversal.png">
 <meta property="og:image" content="http://smnh.me/images/hit-test-flowchart.png">
-<meta property="og:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/iOS_responder_chain_2x.png">
-<meta property="og:updated_time" content="2017-02-14T03:05:38.000Z">
+<meta property="og:updated_time" content="2017-02-14T05:35:42.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS触摸事件的分发和响应链">
+<meta name="twitter:title" content="iOS触摸事件的分发和响应链(一)">
 <meta name="twitter:description" content="前言iOS中的事件在官网可以看到分为三类 : 
  但是在iOS9之后又新增了3D Touch事件, 在UIEvent.h中可以看到事件定义的枚举：
  123456 typedef NS_ENUM(NSInteger, UIEventType) &amp;#123;    UIEventTypeTouches,    UIEventTypeMotion,    UIEventTypeRemoteContro">
@@ -83,9 +82,9 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-ios-touch-event" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-ios-touch-event-1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/02/10/ios-touch-event/" class="article-date">
+    <a href="/2017/02/10/ios-touch-event-1/" class="article-date">
   <time datetime="2017-02-10T08:30:01.000Z" itemprop="datePublished">2017-02-10</time>
 </a>
     
@@ -97,7 +96,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      iOS触摸事件的分发和响应链
+      iOS触摸事件的分发和响应链(一)
     </h1>
   
 
@@ -167,30 +166,15 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIView</span> *)hitTest:(<span class="built_in">CGPoint</span>)point withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    <span class="built_in">UIView</span> *hitTestView = [<span class="keyword">super</span> hitTest:point withEvent:event];</div><div class="line">    <span class="keyword">if</span> (hitTestView == <span class="keyword">self</span>) &#123;</div><div class="line">        hitTestView = <span class="literal">nil</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> hitTestView;</div><div class="line">    <span class="comment">// 这里直接返回nil的话会把所有的子试图的触摸事件全部忽略了</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="三-传递触摸事件给子视图"><a href="#三-传递触摸事件给子视图" class="headerlink" title="三. 传递触摸事件给子视图"></a>三. 传递触摸事件给子视图</h4><p><code>e.g.</code>有时候在<code>scrollView</code>中做翻页浏览的时候，比如一般<code>app</code>首页的轮播图，为了做出一些动画效果就像滑动的时候不同的子试图会有放大缩小的效果，这时候<code>scrollView</code>的<code>width</code>小于屏幕的宽度，所以在触摸两端距离屏幕的空白区域的时候，<code>scrollView</code>不会响应滑动触摸，会影响体验，这时候<code>hitTest:withEvent:</code>派上用场：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在自定义的轮播图view中重写hitTest:withEvent:</span></div><div class="line"><span class="comment">// 注： scrollView是作为subView存在的</span></div><div class="line"></div><div class="line">- (<span class="built_in">UIView</span> *)hitTest:(<span class="built_in">CGPoint</span>)point withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    <span class="built_in">UIView</span> *hitTestView = [<span class="keyword">super</span> hitTest:point withEvent:event];</div><div class="line">    <span class="keyword">if</span> (hitTestView) &#123;</div><div class="line">        hitTestView = <span class="keyword">self</span>.scrollView;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> hitTestView;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="事件的响应链-The-Responder-Chain"><a href="#事件的响应链-The-Responder-Chain" class="headerlink" title="事件的响应链(The Responder Chain)"></a>事件的响应链(<code>The Responder Chain</code>)</h2><h3 id="响应者对象-The-Responder-Object"><a href="#响应者对象-The-Responder-Object" class="headerlink" title="响应者对象(The Responder Object)"></a>响应者对象(<code>The Responder Object</code>)</h3><p>响应者链由响应者对象组成,响应者对象都是<code>UIResponse</code>的子类。</p>
-<p>许多类型的事件依赖于用于事件传递的响应者链。响应者链是一系列链接的响应者对象,它从第一个响应者(<code>responder</code>)开始，并以应用程序对象(<code>application object</code>)结束。如果第一响应者不能处理事件，它将事件转发到响应者链中的下一个响应者。</p>
-<p><strong>响应者对象是能够响应并处理事件的对象。 <code>UIResponder</code>类是所有响应者对象的基类，它定义了编程接口，不仅用于事件处理而且用于公共响应者行为(<code>common responder behavior</code>)。 <code>UIApplication</code>，<code>UIViewController</code>和<code>UIView</code>类的实例是响应者，这意味着所有视图和大多数键控制器对象都是响应者</strong>。</p>
-<blockquote>
-<p>注意核心动画层不是响应者。</p>
-</blockquote>
-<p>第一响应者被指定为第一个接收事件的对象。通常，第一响应者是视图对象。一个对象通过做两件事情成为第一个响应者：</p>
-<ul>
-<li>重写<code>canBecomeFirstResponder</code>方发并且返回<code>YES</code>。</li>
-<li>接收<code>becomeFirstResponder</code>消息。如果需要，响应者对象可以向自身发送此消息。</li>
-</ul>
-<h3 id="响应者链的路径-The-Responder-Chain-39-s-Delivery-Path"><a href="#响应者链的路径-The-Responder-Chain-39-s-Delivery-Path" class="headerlink" title="响应者链的路径(The Responder Chain&#39;s Delivery Path)"></a>响应者链的路径(<code>The Responder Chain&#39;s Delivery Path</code>)</h3><p>响应者链遵循着明确的(事件响应的)传递路径(<code>The Responder Chain Follows a Specific Delivery Path</code>)</p>
-<p>如果初始对象(<code>hit-test view</code>或第一个响应者)不处理事件，则<code>UIKit</code>会将事件传递给响应链中的下一个响应者。每个响应者可以决定是自己处理该事件还是将通过调用<code>nextResponder</code>方法将其传递给自己的下一个响应者。这个过程将会一直进行，直到有响应者对象处理了事件或事件传递到响应者连的最顶端并且没有更多的响应者了才会停止。</p>
-<p><img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/iOS_responder_chain_2x.png" alt="5. The responder chain on iOS"></p>
-
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event/" data-id="ciz4ypfzz0000zd2wobsd6t1u" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz53jhn70001zq2w4e1pxpes" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       
-        <a href="http://yoursite.com/2017/02/10/ios-touch-event/#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://yoursite.com/2017/02/10/ios-touch-event-1/#ds-thread" class="article-comment-link">评论</a>
       
 
       
@@ -201,6 +185,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2017/02/14/ios-touch-event-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          iOS触摸事件的分发和响应链(二)
+        
+      </div>
+    </a>
   
   
     <a href="/2016/12/24/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
@@ -215,7 +208,7 @@
 
 
   <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="2017/02/10/ios-touch-event/" data-title="iOS触摸事件的分发和响应链" data-url="http://yoursite.com/2017/02/10/ios-touch-event/"></div>
+    <div id="ds-thread" class="ds-thread" data-thread-key="2017/02/10/ios-touch-event-1/" data-title="iOS触摸事件的分发和响应链(一)" data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/"></div>
   </section>
 </section>
       
@@ -227,7 +220,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -245,7 +238,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -257,7 +250,11 @@
       <ul>
         
           <li>
-            <a href="/2017/02/10/ios-touch-event/">iOS触摸事件的分发和响应链</a>
+            <a href="/2017/02/14/ios-touch-event-2/">iOS触摸事件的分发和响应链(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2017/02/10/ios-touch-event-1/">iOS触摸事件的分发和响应链(一)</a>
           </li>
         
           <li>
