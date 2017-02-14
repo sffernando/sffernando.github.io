@@ -7,25 +7,22 @@
   <title>iOS触摸事件的分发和响应链(一) | Fernando&#39;s notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="前言iOS中的事件在官网可以看到分为三类 : 
- 但是在iOS9之后又新增了3D Touch事件, 在UIEvent.h中可以看到事件定义的枚举：
- 123456 typedef NS_ENUM(NSInteger, UIEventType) &amp;#123;    UIEventTypeTouches,    UIEventTypeMotion,    UIEventTypeRemoteContro">
+ 但是在iOS9之后又新增了3D Touch事件, 在UIEvent.h中可以看到事件定义的枚举：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS触摸事件的分发和响应链(一)">
 <meta property="og:url" content="http://yoursite.com/2017/02/10/ios-touch-event-1/index.html">
 <meta property="og:site_name" content="Fernando's notes">
 <meta property="og:description" content="前言iOS中的事件在官网可以看到分为三类 : 
- 但是在iOS9之后又新增了3D Touch事件, 在UIEvent.h中可以看到事件定义的枚举：
- 123456 typedef NS_ENUM(NSInteger, UIEventType) &amp;#123;    UIEventTypeTouches,    UIEventTypeMotion,    UIEventTypeRemoteContro">
+ 但是在iOS9之后又新增了3D Touch事件, 在UIEvent.h中可以看到事件定义的枚举：">
 <meta property="og:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/events_to_app_2x.png">
 <meta property="og:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png">
 <meta property="og:image" content="http://smnh.me/images/hit-test-depth-first-traversal.png">
 <meta property="og:image" content="http://smnh.me/images/hit-test-flowchart.png">
-<meta property="og:updated_time" content="2017-02-14T05:35:42.000Z">
+<meta property="og:updated_time" content="2017-02-14T05:54:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS触摸事件的分发和响应链(一)">
 <meta name="twitter:description" content="前言iOS中的事件在官网可以看到分为三类 : 
- 但是在iOS9之后又新增了3D Touch事件, 在UIEvent.h中可以看到事件定义的枚举：
- 123456 typedef NS_ENUM(NSInteger, UIEventType) &amp;#123;    UIEventTypeTouches,    UIEventTypeMotion,    UIEventTypeRemoteContro">
+ 但是在iOS9之后又新增了3D Touch事件, 在UIEvent.h中可以看到事件定义的枚举：">
 <meta name="twitter:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/events_to_app_2x.png">
   
     <link rel="alternative" href="/atom.xml" title="Fernando&#39;s notes" type="application/atom+xml">
@@ -106,6 +103,7 @@
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>iOS中的事件在<a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Introduction/Introduction.html" target="_blank" rel="external">官网</a>可以看到分为三类 : <img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/events_to_app_2x.png" alt="图1. Events"></p>
 <p> 但是在<code>iOS9</code>之后又新增了<code>3D Touch</code>事件, 在<code>UIEvent.h</code>中可以看到事件定义的枚举：</p>
+ <a id="more"></a>
  <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"> <span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, <span class="built_in">UIEventType</span>) &#123;</div><div class="line">    <span class="built_in">UIEventTypeTouches</span>,</div><div class="line">    <span class="built_in">UIEventTypeMotion</span>,</div><div class="line">    <span class="built_in">UIEventTypeRemoteControl</span>,</div><div class="line">    <span class="built_in">UIEventTypePresses</span> <span class="built_in">NS_ENUM_AVAILABLE_IOS</span>(<span class="number">9</span>_0),</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p> 所以, <code>iOS</code>中的事件可以分为下面四类:</p>
 <ul>
@@ -170,7 +168,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz53jhn70001zq2w4e1pxpes" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz548e0h0001fd2wqng22e1c" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       

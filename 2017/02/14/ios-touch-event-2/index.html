@@ -15,7 +15,7 @@
 <meta property="og:description" content="事件的响应链(The Responder Chain)响应者对象(The Responder Object)响应者链由响应者对象组成,响应者对象都是UIResponse的子类。
 许多类型的事件依赖于用于事件传递的响应者链。响应者链是一系列链接的响应者对象,它从第一个响应者(responder)开始，并以应用程序对象(application object)结束。如果第一响应者不能处理事件，它将事件转">
 <meta property="og:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/iOS_responder_chain_2x.png">
-<meta property="og:updated_time" content="2017-02-14T05:36:31.000Z">
+<meta property="og:updated_time" content="2017-02-14T05:55:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS触摸事件的分发和响应链(二)">
 <meta name="twitter:description" content="事件的响应链(The Responder Chain)响应者对象(The Responder Object)响应者链由响应者对象组成,响应者对象都是UIResponse的子类。
@@ -100,6 +100,7 @@
       
         <h2 id="事件的响应链-The-Responder-Chain"><a href="#事件的响应链-The-Responder-Chain" class="headerlink" title="事件的响应链(The Responder Chain)"></a>事件的响应链(<code>The Responder Chain</code>)</h2><h3 id="响应者对象-The-Responder-Object"><a href="#响应者对象-The-Responder-Object" class="headerlink" title="响应者对象(The Responder Object)"></a>响应者对象(<code>The Responder Object</code>)</h3><p>响应者链由响应者对象组成,响应者对象都是<code>UIResponse</code>的子类。</p>
 <p>许多类型的事件依赖于用于事件传递的响应者链。响应者链是一系列链接的响应者对象,它从第一个响应者(<code>responder</code>)开始，并以应用程序对象(<code>application object</code>)结束。如果第一响应者不能处理事件，它将事件转发到响应者链中的下一个响应者。</p>
+<a id="more"></a>
 <p><strong>响应者对象是能够响应并处理事件的对象。 <code>UIResponder</code>类是所有响应者对象的基类，它定义了编程接口，不仅用于事件处理而且用于公共响应者行为(<code>common responder behavior</code>)。 <code>UIApplication</code>，<code>UIViewController</code>和<code>UIView</code>类的实例是响应者，这意味着所有视图和大多数键控制器对象都是响应者</strong>。</p>
 <blockquote>
 <p>注意核心动画层不是响应者。</p>
@@ -135,7 +136,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="ciz53jhnc0002zq2w2y5kjkzh" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="ciz548e0m0002fd2wyxhcv8p9" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
       
 
       
