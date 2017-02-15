@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png">
 <meta property="og:image" content="http://smnh.me/images/hit-test-depth-first-traversal.png">
 <meta property="og:image" content="http://smnh.me/images/hit-test-flowchart.png">
-<meta property="og:updated_time" content="2017-02-14T05:54:48.000Z">
+<meta property="og:updated_time" content="2017-02-15T01:34:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS触摸事件的分发和响应链(一)">
 <meta name="twitter:description" content="前言iOS中的事件在官网可以看到分为三类 : 
@@ -164,11 +164,19 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIView</span> *)hitTest:(<span class="built_in">CGPoint</span>)point withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    <span class="built_in">UIView</span> *hitTestView = [<span class="keyword">super</span> hitTest:point withEvent:event];</div><div class="line">    <span class="keyword">if</span> (hitTestView == <span class="keyword">self</span>) &#123;</div><div class="line">        hitTestView = <span class="literal">nil</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> hitTestView;</div><div class="line">    <span class="comment">// 这里直接返回nil的话会把所有的子试图的触摸事件全部忽略了</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="三-传递触摸事件给子视图"><a href="#三-传递触摸事件给子视图" class="headerlink" title="三. 传递触摸事件给子视图"></a>三. 传递触摸事件给子视图</h4><p><code>e.g.</code>有时候在<code>scrollView</code>中做翻页浏览的时候，比如一般<code>app</code>首页的轮播图，为了做出一些动画效果就像滑动的时候不同的子试图会有放大缩小的效果，这时候<code>scrollView</code>的<code>width</code>小于屏幕的宽度，所以在触摸两端距离屏幕的空白区域的时候，<code>scrollView</code>不会响应滑动触摸，会影响体验，这时候<code>hitTest:withEvent:</code>派上用场：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在自定义的轮播图view中重写hitTest:withEvent:</span></div><div class="line"><span class="comment">// 注： scrollView是作为subView存在的</span></div><div class="line"></div><div class="line">- (<span class="built_in">UIView</span> *)hitTest:(<span class="built_in">CGPoint</span>)point withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    <span class="built_in">UIView</span> *hitTestView = [<span class="keyword">super</span> hitTest:point withEvent:event];</div><div class="line">    <span class="keyword">if</span> (hitTestView) &#123;</div><div class="line">        hitTestView = <span class="keyword">self</span>.scrollView;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> hitTestView;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>##参考链接</p>
+<ul>
+<li><a href="http://smnh.me/hit-testing-in-ios/" target="_blank" rel="external">Hit-Testing in iOS</a></li>
+<li><a href="http://www.jianshu.com/p/05cbcd774f45" target="_blank" rel="external">iOS中的响应链（The Responder Chain）</a></li>
+<li><a href="http://joywii.github.io/blog/2015/03/17/ioszhong-de-hit-testing/" target="_blank" rel="external">iOS中的Hit-Testing</a></li>
+<li><a href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/event_delivery_responder_chain/event_delivery_responder_chain.html#//apple_ref/doc/uid/TP40009541-CH4-SW2" target="_blank" rel="external">Event Delivery: The Responder Chain</a></li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz5ncytr00015w2wmrn5i9r2" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz6adgku0001o22wj9ddxktx" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       
