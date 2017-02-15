@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png">
 <meta property="og:image" content="http://smnh.me/images/hit-test-depth-first-traversal.png">
 <meta property="og:image" content="http://smnh.me/images/hit-test-flowchart.png">
-<meta property="og:updated_time" content="2017-02-15T01:34:30.000Z">
+<meta property="og:updated_time" content="2017-02-15T01:54:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS触摸事件的分发和响应链(一)">
 <meta name="twitter:description" content="前言iOS中的事件在官网可以看到分为三类 : 
@@ -126,11 +126,11 @@
 </ul>
 <p>这次主要学习 <strong>触摸事件 (<code>Multitouch events</code>)。</strong></p>
 <h2 id="触摸事件的产生"><a href="#触摸事件的产生" class="headerlink" title="触摸事件的产生"></a>触摸事件的产生</h2><ol>
-<li>当我们的手指在<code>iPhone</code>等屏幕上操作的时候, 手机中屏幕在手指按压/触摸的地方会产生电信号的变化,该变化会有操作系统内核的驱动程序捕捉到该<code>Event</code>, 暂且叫做<code>eventOrigin</code></li>
-<li><code>UIKit</code>会创建一个包含处理<code>eventOrigin</code>时所需要的信息的事件对象<code>eventA</code>, 然后将<code>eventA</code>放置到当前活动<code>app</code>的(<code>active app&#39;s</code>)事件队列(<code>Event Queue</code>)中。</li>
-<li>当前活动的<code>app</code>有事件之后，<code>UIApplication</code>的单例实例就会从事件队列中去取顶部的第一个事件对象来分发并且处理。<em>通常，<code>UIApplication</code>的单例实例会将事件送到<code>app</code>的<code>key window object</code></em></li>
+<li>当我们的手指在<code>iPhone</code>等屏幕上操作的时候, 手机中屏幕在手指按压/触摸的地方会产生电信号的变化,该变化会由操作系统内核的驱动程序捕捉到该<code>Event</code>, 暂且叫做<code>eventOrigin</code></li>
+<li><code>UIKit</code>会创建一个包含处理<code>eventOrigin</code>时所需要的信息的<code>UIEvent</code>对象<code>eventA</code>, 然后将<code>eventA</code>放置到当前活动<code>app</code>的(<code>active app&#39;s</code>)事件队列(<code>Event Queue</code>)中。</li>
+<li>当前活动的<code>app</code>判断到有需要执行的事件之后，<code>UIApplication</code>的单例实例就会从事件队列中去取顶部的第一个事件对象来分发并且处理。<em>通常，<code>UIApplication</code>的单例实例会将事件送到<code>app</code>的<code>key window object</code></em></li>
 </ol>
-<h2 id="触摸事件的传递"><a href="#触摸事件的传递" class="headerlink" title="触摸事件的传递"></a>触摸事件的传递</h2><p><strong>触摸事件，它是包含着一组触摸信息(<code>touches</code>)的<code>UIEvent</code>的对象。</strong> <em>通常，<code>UIApplication</code>的单例实例获取到<code>Event Queue</code>中的第一个时间之后会将改事件送到<code>app</code>的<code>key window object</code> —&gt; <code>keyWindow</code>，<code>keyWindow</code>会根据事件的类型找到初始的对象，并将事件传给给对象去处理</em>。</p>
+<h2 id="触摸事件的传递"><a href="#触摸事件的传递" class="headerlink" title="触摸事件的传递"></a>触摸事件的传递</h2><p><strong>触摸事件，它是包含着一组触摸信息(<code>touches</code>)的<code>UIEvent</code>的对象。</strong> <em>通常，<code>UIApplication</code>的单例实例获取到<code>Event Queue</code>中的第一个事件之后会将改事件送到<code>app</code>的<code>key window object</code> —&gt; <code>keyWindow</code>，<code>keyWindow</code>会根据事件的类型找到初始的对象，并将事件传给该对象去处理</em>。</p>
 <p>对于触摸事件，窗口对象首先尝试将事件传递到有接收到触摸的视图。 该视图称为命中测试(<code>hit-test</code>)视图。 找到命中测试(<code>hit-test</code>)视图的过程称为命中测试(<code>hit-testing</code>)。这些事件路径的最终目标是找到一个可以处理和响应事件的对象。 因此，UIKit首先将事件发送到最适合处理事件的对象。 <em>对于触摸事件，该对象是命中测试视图，对于其他事件，该对象是第一个响应者</em>。</p>
 <p><img src="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png" alt="图2. Hit-testing returns the subview that was touched"></p>
 <h3 id="Hit-Testing返回触摸发生的视图"><a href="#Hit-Testing返回触摸发生的视图" class="headerlink" title="Hit-Testing返回触摸发生的视图"></a>Hit-Testing返回触摸发生的视图</h3><blockquote>
@@ -152,7 +152,7 @@
 <li>触摸不在<code>View D</code>的界限内，但它在<code>View E</code>的界限内。</li>
 </ul>
 <p>最终，<code>View E</code>是视图层级中包含触摸的最低的视图，因此它成为<code>hit-test view</code>.</p>
-<p>  <code>hitTest:withEvent:</code>方法为给定的<code>CGPoint</code>和<code>UIEvent</code>返回特定的点击测试视图(<code>hit test view</code>)。<code>hitTest:withEvent:</code>方法的调用是通过调用自身的<code>pointInside:withEvent:</code>方法开始的。 如果传递到·hitTest:withEvent:·方法中的点是在视图的边界内，则<code>pointInside:withEvent:</code>返回<code>YES</code>。然后，在每个返回<code>YES</code>的子视图上递归调用<code>hitTest:withEvent:</code>方法 。</p>
+<p>  <code>hitTest:withEvent:</code>方法为给定的<code>CGPoint</code>和<code>UIEvent</code>返回特定的点击测试视图(<code>hit test view</code>)。<code>hitTest:withEvent:</code>方法的调用是通过调用自身的<code>pointInside:withEvent:</code>方法开始的。 如果传递到<code>hitTest:withEvent:</code>方法中的点是在视图的边界内，则<code>pointInside:withEvent:</code>返回<code>YES</code>。然后，在每个返回<code>YES</code>的子视图上递归调用<code>hitTest:withEvent:</code>方法 。</p>
 <p>  如果传递到<code>hitTest:withEvent:</code>方法中的点不在视图的边界内，首次调用<code>pointInside:withEvent:</code>方法返回<code>NO</code>，同时该点被忽略，并且<code>hitTest:withEvent:</code>返回<code>nil</code>。如果一个子视图返回<code>NO</code>，则该子视图层级结构的整个分支将被忽略，因为如果触摸没有发生在该子视图中，则它也不会出现在该子视图中的任何子视图中。这意味着在子视图内而在父视图之外的任何点都不能接受触摸事件，因为触摸点必须在父视图和子视图边界内。<code>e.g.</code>如果该子视图(相对它的子试图而言，它就是父试图)的<code>clipsToBounds</code>属性设置为<code>NO</code>，则可能出现此问题。</p>
 <blockquote>
 <p>注意：一个触摸对象的生命期与其命中测试视图(<code>hit-test view</code>)相关联，即使触摸稍后移动到视图外。</p>
@@ -176,7 +176,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz6adgku0001o22wj9ddxktx" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz6b1p6e0000st2w3tcc2vo0" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       
