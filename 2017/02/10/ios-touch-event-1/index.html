@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/Art/hit_testing_2x.png">
 <meta property="og:image" content="http://smnh.me/images/hit-test-depth-first-traversal.png">
 <meta property="og:image" content="http://smnh.me/images/hit-test-flowchart.png">
-<meta property="og:updated_time" content="2017-02-15T01:55:56.000Z">
+<meta property="og:updated_time" content="2017-02-16T03:22:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS触摸事件的分发和响应链(一)">
 <meta name="twitter:description" content="前言iOS中的事件在官网可以看到分为三类 : 
@@ -143,6 +143,7 @@
 <li>视图包含这个点: <code>pointInside:withEvent: == YES</code></li>
 </ul>
 </blockquote>
+<p>备注:<code>UIImageView</code>的<code>userInteractionEnabled</code>属性默认值是<code>NO</code>！</p>
 </blockquote>
 <p>iOS使用<code>hit-testing</code>来查找被触摸的视图。<code>hit-testing</code>需要检查触摸是否在所有相关视图对象的边界内。如果是，它会递归检查视图的所有子视图。视图层级中包含触摸点的最低的视图成为<code>hit-test view</code>(命中测试视图)。<strong>iOS确定<code>hit-test view</code>后，它会将触摸事件传递到该视图进行处理</strong>。</p>
 <p>如上图2所示，假设用户触摸图中的<code>View E</code>。iOS通过按照如下顺序检查子视图来查找<code>hit-test view</code>:</p>
@@ -175,7 +176,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz7ra4ca0001pi2wdnuh1irt" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz7tm3j800004u2wfbxl540b" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       
