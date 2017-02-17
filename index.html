@@ -96,12 +96,35 @@
 <blockquote>
 <p>这个设置了<code>UITextView</code>中的<code>layoutManager</code>(<code>NSLayoutManager</code>)是否非连续性布局属性。默认是<code>YES</code>,设置成<code>NO</code>之后<code>UITextView</code>就不会重置滑动了，就达到了我们想让其自己滚动的目的。</p>
 </blockquote>
+<h2 id="本地图片的加载方式"><a href="#本地图片的加载方式" class="headerlink" title="本地图片的加载方式"></a>本地图片的加载方式</h2><p>基本上载项目中加载本地图片会使用<code>imageNamed:</code>方法，比如<code>[UIImage imageNamed:@&quot;1.png&quot;]</code>，其实还有另外一种方式:<code>iOS</code>中从程序<code>bundle</code>中加载<code>UIImage</code>一般有两种方法</p>
+<ul>
+<li>经常用的<code>imageNamed:</code></li>
+<li>不怎么使用的:<code>imageWithContentsOfFile:</code></li>
+</ul>
+<p><a href="http://www.jianshu.com/p/28b1e50374bf" target="_blank" rel="external">这里</a>说的比较明确了:</p>
+<blockquote>
+<p><code>imageNamed:</code>特点:</p>
+<blockquote>
+<ol>
+<li>加载内存当中之后，会一直停留在内存当中，不会随着对象的销毁而销毁。</li>
+<li>相同的图片，图片不会重复加载。</li>
+</ol>
+</blockquote>
+<p><code>imageWithContentsOfFile:</code>特点:</p>
+<blockquote>
+<ol>
+<li>不会缓存，相同的图片会被重复加载内存当中。</li>
+<li>对象销毁的时候，加载到内存中图片会随着一起销毁。</li>
+</ol>
+</blockquote>
+</blockquote>
+<p>所以这两个方法的本质的区别就是缓存。基本上项目中一般的<code>icon</code>加载用<code>imageNamed:</code>没毛病，但是如果要加载一张比较大的图片或者只使用一次的图片(比如<code>App</code>中的引导图，用户交互指引图)的时候，应该用<code>imageWithContentsOfFile:</code>。</p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="ciz9e2iaq0002t12wfa4tnlnp" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="ciz9iw9kh0001pk2weyqns3pa" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
       
 
       
@@ -151,7 +174,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="ciz9e2iaw0004t12wy3b85qyo" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="ciz9iw9l30009pk2w13dk5vrl" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
       
 
       
@@ -201,7 +224,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz9e2ian0001t12wr3yb317q" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz9iw9kj0002pk2we2ot1dji" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       
@@ -250,7 +273,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="ciz9e2iai0000t12wmqn9ylux" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="ciz9iw9kd0000pk2wm8pr5obm" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
       
 
       
