@@ -4,14 +4,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2017/2 | Fernando&#39;s notes</title>
+  <title>iOS知识备忘 | Fernando&#39;s notes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Fernando's notes">
-<meta property="og:url" content="http://yoursite.com/archives/2017/02/index.html">
+  <meta name="description" content="(一)UITextView没有自动滚动当自定义一个自适应限高的UITextView的时候，当输入的文本内容超过textView最大的高度的时候，textView不会自己滚到最下面的输入指示闪烁光标。举个栗子，微信(测试机型: iPhone 6s，测试系统iOS 10.2.1， 测试版本: WeChat 6.5.5及之前的版本)输入框中连续点击输入自带表情，当超过5行之后继续点，则表情数量继续增加，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS知识备忘">
+<meta property="og:url" content="http://yoursite.com/2017/02/17/ios-tips-1/index.html">
 <meta property="og:site_name" content="Fernando's notes">
+<meta property="og:description" content="(一)UITextView没有自动滚动当自定义一个自适应限高的UITextView的时候，当输入的文本内容超过textView最大的高度的时候，textView不会自己滚到最下面的输入指示闪烁光标。举个栗子，微信(测试机型: iPhone 6s，测试系统iOS 10.2.1， 测试版本: WeChat 6.5.5及之前的版本)输入框中连续点击输入自带表情，当超过5行之后继续点，则表情数量继续增加，">
+<meta property="og:updated_time" content="2017-02-17T05:42:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Fernando's notes">
+<meta name="twitter:title" content="iOS知识备忘">
+<meta name="twitter:description" content="(一)UITextView没有自动滚动当自定义一个自适应限高的UITextView的时候，当输入的文本内容超过textView最大的高度的时候，textView不会自己滚到最下面的输入指示闪烁光标。举个栗子，微信(测试机型: iPhone 6s，测试系统iOS 10.2.1， 测试版本: WeChat 6.5.5及之前的版本)输入框中连续点击输入自带表情，当超过5行之后继续点，则表情数量继续增加，">
   
     <link rel="alternative" href="/atom.xml" title="Fernando&#39;s notes" type="application/atom+xml">
   
@@ -67,78 +71,69 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/02/17/ios-tips-1/" class="archive-article-date">
-  <time datetime="2017-02-17T05:24:01.000Z" itemprop="datePublished">2月 17</time>
+      <section id="main"><article id="post-ios-tips-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/17/ios-tips-1/" class="article-date">
+  <time datetime="2017-02-17T05:24:01.000Z" itemprop="datePublished">2017-02-17</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/02/17/ios-tips-1/">iOS知识备忘</a>
+    <h1 class="article-title" itemprop="name">
+      iOS知识备忘
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/02/14/ios-touch-event-2/" class="archive-article-date">
-  <time datetime="2017-02-14T05:36:01.000Z" itemprop="datePublished">2月 14</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/02/14/ios-touch-event-2/">iOS触摸事件的分发和响应链(二)</a>
-    </h1>
-  
+        <h2 id="一-UITextView没有自动滚动"><a href="#一-UITextView没有自动滚动" class="headerlink" title="(一)UITextView没有自动滚动"></a>(一)<code>UITextView</code>没有自动滚动</h2><p>当自定义一个自适应限高的<code>UITextView</code>的时候，当输入的文本内容超过<code>textView</code>最大的高度的时候，<code>textView</code>不会自己滚到最下面的输入指示闪烁光标。举个栗子，微信(测试机型: <code>iPhone 6s</code>，测试系统<code>iOS 10.2.1</code>， 测试版本: <code>WeChat 6.5.5</code>及之前的版本)输入框中连续点击输入自带表情，当超过5行之后继续点，则表情数量继续增加，但是文本内容不会向下滚，只有当删除一个之后，才会重新滚到最下面。<br><strong>解决方案</strong></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">textView.layoutManager.allowsNonContiguousLayout = <span class="literal">NO</span>;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这个设置了<code>UITextView</code>中的<code>layoutManager</code>(<code>NSLayoutManager</code>)是否非连续性布局属性。默认是<code>YES</code>,设置成<code>NO</code>之后<code>UITextView</code>就不会重置滑动了，就达到了我们想让其自己滚动的目的。</p>
+</blockquote>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/02/10/ios-touch-event-1/" class="archive-article-date">
-  <time datetime="2017-02-10T08:30:01.000Z" itemprop="datePublished">2月 10</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/02/10/ios-touch-event-1/">iOS触摸事件的分发和响应链(一)</a>
-    </h1>
-  
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="ciz9e2iaq0002t12wfa4tnlnp" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
+      
 
-    </header>
+      
+        <a href="http://yoursite.com/2017/02/17/ios-tips-1/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tips/">tips</a></li></ul>
+
+    </footer>
   </div>
-</article>
+  
+    
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2017/02/14/ios-touch-event-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">iOS触摸事件的分发和响应链(二)</div>
+    </a>
   
+</nav>
 
+  
+</article>
+
+
+  <section id="comments">
+    <div id="ds-thread" class="ds-thread" data-thread-key="2017/02/17/ios-tips-1/" data-title="iOS知识备忘" data-url="http://yoursite.com/2017/02/17/ios-tips-1/"></div>
+  </section>
 </section>
       
       <aside id="sidebar">

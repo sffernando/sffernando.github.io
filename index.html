@@ -69,6 +69,55 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-ios-tips-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/02/17/ios-tips-1/" class="article-date">
+  <time datetime="2017-02-17T05:24:01.000Z" itemprop="datePublished">2017-02-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/02/17/ios-tips-1/">iOS知识备忘</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-UITextView没有自动滚动"><a href="#一-UITextView没有自动滚动" class="headerlink" title="(一)UITextView没有自动滚动"></a>(一)<code>UITextView</code>没有自动滚动</h2><p>当自定义一个自适应限高的<code>UITextView</code>的时候，当输入的文本内容超过<code>textView</code>最大的高度的时候，<code>textView</code>不会自己滚到最下面的输入指示闪烁光标。举个栗子，微信(测试机型: <code>iPhone 6s</code>，测试系统<code>iOS 10.2.1</code>， 测试版本: <code>WeChat 6.5.5</code>及之前的版本)输入框中连续点击输入自带表情，当超过5行之后继续点，则表情数量继续增加，但是文本内容不会向下滚，只有当删除一个之后，才会重新滚到最下面。<br><strong>解决方案</strong></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">textView.layoutManager.allowsNonContiguousLayout = <span class="literal">NO</span>;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这个设置了<code>UITextView</code>中的<code>layoutManager</code>(<code>NSLayoutManager</code>)是否非连续性布局属性。默认是<code>YES</code>,设置成<code>NO</code>之后<code>UITextView</code>就不会重置滑动了，就达到了我们想让其自己滚动的目的。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="ciz9e2iaq0002t12wfa4tnlnp" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
+      
+
+      
+        <a href="http://yoursite.com/2017/02/17/ios-tips-1/#ds-thread" class="article-comment-link">评论</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tips/">tips</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ios-touch-event-2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2017/02/14/ios-touch-event-2/" class="article-date">
@@ -102,7 +151,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="ciz87ytt50001oo2wae5zqz9o" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="ciz9e2iaw0004t12wy3b85qyo" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
       
 
       
@@ -152,7 +201,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz87ytt80002oo2whub87flp" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="ciz9e2ian0001t12wr3yb317q" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       
@@ -201,7 +250,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="ciz87ytt00000oo2wjsod7fyg" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="ciz9e2iai0000t12wmqn9ylux" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
       
 
       
@@ -227,7 +276,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -236,7 +285,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/iOS/" style="font-size: 10px;">iOS</a>
+      <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a>
     </div>
   </div>
 
@@ -245,7 +294,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -255,6 +304,10 @@
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2017/02/17/ios-tips-1/">iOS知识备忘</a>
+          </li>
         
           <li>
             <a href="/2017/02/14/ios-touch-event-2/">iOS触摸事件的分发和响应链(二)</a>
