@@ -129,11 +129,17 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.tableView reloadData];</div><div class="line"><span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</div><div class="line">    <span class="comment">// 这里开始处理reload完成之后的操作。</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>同样，有时候在<code>collectionView reloadData</code>之后会获取不到当前的某一个<code>visibleCell</code>,这时候我们可以这样解决:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.collectionView performBatchUpdates:^&#123;</div><div class="line">    [<span class="keyword">self</span>.collectionView reloadData];</div><div class="line">&#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">    <span class="keyword">if</span> (finished) &#123;</div><div class="line">         <span class="comment">// 执行reload完成之后的操作</span></div><div class="line">         <span class="comment">// 比如获取某一个visibleCell</span></div><div class="line">    &#125;</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<h2 id="五-使用动画设置tableHeaderView"><a href="#五-使用动画设置tableHeaderView" class="headerlink" title="(五) 使用动画设置tableHeaderView"></a>(五) 使用动画设置<code>tableHeaderView</code></h2><p>以前设置<code>tableHeaderView</code>的时候都是直接设置:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">self</span>.tableView.tableHeaderView = _headerView;</div><div class="line"><span class="comment">// 或者</span></div><div class="line">[<span class="keyword">self</span>.tableView setTableHeaderView: _headerView];</div></pre></td></tr></table></figure>
+<p>，没有想过使用过度动画。但其实是可以使用过渡动画的，像这样:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 设置header</span></div><div class="line">[<span class="keyword">self</span>.tableView beginUpdates];</div><div class="line">[<span class="keyword">self</span>.tableView setTableHeaderView: _headerView];</div><div class="line"><span class="built_in">CGRect</span> theFrame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, width, height);</div><div class="line">[<span class="built_in">UIView</span> animateWithDuration:<span class="number">.25</span>f animations:^&#123;</div><div class="line">    _headerView.frame = theFrame;</div><div class="line">&#125;];</div><div class="line">[<span class="keyword">self</span>.tableView endUpdates];</div><div class="line"></div><div class="line"><span class="comment">// 去掉header</span></div><div class="line">[<span class="keyword">self</span>.tableView beginUpdates];</div><div class="line">[<span class="keyword">self</span>.tableView setTableHeaderView: _headerView];</div><div class="line">[<span class="built_in">UIView</span> animateWithDuration:<span class="number">.25</span>f animations:^&#123;</div><div class="line">    <span class="built_in">CGRect</span> theFrame = <span class="built_in">CGRectZero</span>;</div><div class="line">    _headerView.frame = theFrame;</div><div class="line"> &#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">     <span class="keyword">self</span>.tableView.tableHeaderView = <span class="literal">nil</span>;</div><div class="line"> &#125;];</div><div class="line"> [<span class="keyword">self</span>.tableView endUpdates];</div></pre></td></tr></table></figure>
+<p>这样就可以有动画效果啦！不过，这里会有一点小问题。当去掉使用动画去掉<code>header</code>的时候，如果<code>headerView</code>上有内容，就会出现断层的情况，就是会出现动画衔接不上的状况。所以在这里我想到一个折中取巧方法，那就是使用一个假的透明背景的假<code>headerView</code>代替,这样基本上可以无缝过度衔接：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 去掉header</span></div><div class="line">[<span class="keyword">self</span>.tableView beginUpdates];</div><div class="line"><span class="keyword">self</span>.fakeTableHeader.frame = _headerView.frame;</div><div class="line">[<span class="keyword">self</span>.tableView setTableHeaderView:<span class="keyword">self</span>.fakeTableHeader];</div><div class="line">[<span class="built_in">UIView</span> animateWithDuration:<span class="number">.25</span>f animations:^&#123;</div><div class="line">    <span class="built_in">CGRect</span> theFrame = <span class="built_in">CGRectZero</span>;</div><div class="line">    _headerView.frame = theFrame;</div><div class="line">    <span class="keyword">self</span>.fakeTableHeader.frame = theFrame;</div><div class="line"> &#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">     <span class="keyword">self</span>.tableView.tableHeaderView = <span class="literal">nil</span>;</div><div class="line"> &#125;];</div><div class="line"> [<span class="keyword">self</span>.tableView endUpdates];</div></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="cizifxsti0000h42wzfj162se" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="cizigrty90001r52wjp9juds7" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
       
 
       
@@ -183,7 +189,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="cizifxstw0004h42we02npht2" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="cizigrtyj0004r52wns6y9jpx" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
       
 
       
@@ -233,7 +239,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="cizifxstt0003h42wyh8hrrpg" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="cizigrtyc0002r52wn1qke8ic" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       
@@ -282,7 +288,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="cizifxstm0001h42wyalpx3ka" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="cizigrty50000r52wekwc0gxs" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
       
 
       
