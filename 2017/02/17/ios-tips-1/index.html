@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/02/17/ios-tips-1/index.html">
 <meta property="og:site_name" content="Fernando's notes">
 <meta property="og:description" content="(一)UITextView没有自动滚动当自定义一个自适应限高的UITextView的时候，当输入的文本内容超过textView最大的高度的时候，textView不会自己滚到最下面的输入指示闪烁光标。举个栗子，微信(测试机型: iPhone 6s，测试系统iOS 10.2.1， 测试版本: WeChat 6.5.5及之前的版本)输入框中连续点击输入自带表情，当超过5行之后继续点，则表情数量继续增加，">
-<meta property="og:updated_time" content="2017-02-18T13:50:02.000Z">
+<meta property="og:updated_time" content="2017-02-23T13:44:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS知识备忘">
 <meta name="twitter:description" content="(一)UITextView没有自动滚动当自定义一个自适应限高的UITextView的时候，当输入的文本内容超过textView最大的高度的时候，textView不会自己滚到最下面的输入指示闪烁光标。举个栗子，微信(测试机型: iPhone 6s，测试系统iOS 10.2.1， 测试版本: WeChat 6.5.5及之前的版本)输入框中连续点击输入自带表情，当超过5行之后继续点，则表情数量继续增加，">
@@ -127,12 +127,15 @@
 <p><code>ERROR:  While executing gem ... (Errno::EPERM)</code><br> <code>Operation not permitted - /usr/bin/pod</code></p>
 </blockquote>
 <p>解决方法: 重新执行<strong><code>sudo gem install -n /usr/local/bin cocoapods</code></strong></p>
-
+<h2 id="四-reloadData何时执行结束？"><a href="#四-reloadData何时执行结束？" class="headerlink" title="(四) reloadData何时执行结束？"></a>(四) <code>reloadData</code>何时执行结束？</h2><p>一般用到<code>[self.tableView reloadData]</code>的时候，都不用去管<code>reload</code>完成之后的时机，但是某些需求下还是需要知道<code>reloadData</code>究竟何时执行完成。这时候我们可以这样做:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.tableView reloadData];</div><div class="line"><span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</div><div class="line">    <span class="comment">// 这里开始处理reload完成之后的操作。</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>同样，有时候在<code>collectionView reloadData</code>之后会获取不到当前的某一个<code>visibleCell</code>,这时候我们可以这样解决:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.collectionView performBatchUpdates:^&#123;</div><div class="line">    [<span class="keyword">self</span>.collectionView reloadData];</div><div class="line">&#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">    <span class="keyword">if</span> (finished) &#123;</div><div class="line">         <span class="comment">// 执行reload完成之后的操作</span></div><div class="line">         <span class="comment">// 比如获取某一个visibleCell</span></div><div class="line">    &#125;</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="cizbax92i0000il2wvmrtz1uw" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="cizifxsti0000h42wzfj162se" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
       
 
       
