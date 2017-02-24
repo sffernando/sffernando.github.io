@@ -129,6 +129,11 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.tableView reloadData];</div><div class="line"><span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</div><div class="line">    <span class="comment">// 这里开始处理reload完成之后的操作。</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>同样，有时候在<code>collectionView reloadData</code>之后会获取不到当前的某一个<code>visibleCell</code>,这时候我们可以这样解决:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.collectionView performBatchUpdates:^&#123;</div><div class="line">    [<span class="keyword">self</span>.collectionView reloadData];</div><div class="line">&#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">    <span class="keyword">if</span> (finished) &#123;</div><div class="line">         <span class="comment">// 执行reload完成之后的操作</span></div><div class="line">         <span class="comment">// 比如获取某一个visibleCell</span></div><div class="line">    &#125;</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
+<p><strong><code>2.24</code>更新:</strong>执行上述代码有时候会发生<strong>`*</strong> Assertion failure in -[UICollectionView _endItemAnimationsWithInvalidationContext:tentativelyForReordering:animator:]`**这样的错误。<a href="https://developer.apple.com/reference/uikit/uicollectionview/1618045-performbatchupdates?language=objc" target="_blank" rel="external">官方文档</a>对于改方法的说明:</p>
+<blockquote>
+<p><code>Animates multiple insert, delete, reload, and move operations as a group.</code></p>
+</blockquote>
+<p>我认为上面所说的<code>reload</code>操作应该是对于某一个<code>section</code>或者是某一个或多个<code>cell</code>的.因为在执行完<code>performBatchUpdates</code>操作之后，<code>collectionView</code>会自动<code>reloadData</code>。所以<code>performBatchUpdates</code>这里面应该执行的是数据源等的更新，保证数据源等的匹配，而不是<code>[self.collectionView reloadData];</code></p>
 <h2 id="五-使用动画设置tableHeaderView"><a href="#五-使用动画设置tableHeaderView" class="headerlink" title="(五) 使用动画设置tableHeaderView"></a>(五) 使用动画设置<code>tableHeaderView</code></h2><p>以前设置<code>tableHeaderView</code>的时候都是直接设置:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">self</span>.tableView.tableHeaderView = _headerView;</div><div class="line"><span class="comment">// 或者</span></div><div class="line">[<span class="keyword">self</span>.tableView setTableHeaderView: _headerView];</div></pre></td></tr></table></figure>
 <p>，没有想过使用过度动画。但其实是可以使用过渡动画的，像这样:</p>
@@ -141,7 +146,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="cizj55dcp0001ru2wdvmg2vqr" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="cizj7kha30001472wwwe2zmu9" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
       
 
       
@@ -191,7 +196,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="cizj55dcy0004ru2wt7jxlqgz" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="cizj7khab0004472wtwx1jp91" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
       
 
       
@@ -241,7 +246,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="cizj55dcr0002ru2w47b9h6um" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="cizj7kha60002472wiiq8tgp9" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       
@@ -290,7 +295,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="cizj55dck0000ru2wrwjefl30" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="cizj7kh9y0000472wxok0j48b" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
       
 
       
