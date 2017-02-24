@@ -129,7 +129,7 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.tableView reloadData];</div><div class="line"><span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</div><div class="line">    <span class="comment">// 这里开始处理reload完成之后的操作。</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>同样，有时候在<code>collectionView reloadData</code>之后会获取不到当前的某一个<code>visibleCell</code>,这时候我们可以这样解决:</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[<span class="keyword">self</span>.collectionView performBatchUpdates:^&#123;</div><div class="line">    [<span class="keyword">self</span>.collectionView reloadData];</div><div class="line">&#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">    <span class="keyword">if</span> (finished) &#123;</div><div class="line">         <span class="comment">// 执行reload完成之后的操作</span></div><div class="line">         <span class="comment">// 比如获取某一个visibleCell</span></div><div class="line">    &#125;</div><div class="line">&#125;];</div></pre></td></tr></table></figure>
-<p><strong><code>2.24</code>更新:</strong>执行上述代码有时候会发生<strong>`*</strong> Assertion failure in -[UICollectionView _endItemAnimationsWithInvalidationContext:tentativelyForReordering:animator:]`**这样的错误。<a href="https://developer.apple.com/reference/uikit/uicollectionview/1618045-performbatchupdates?language=objc" target="_blank" rel="external">官方文档</a>对于改方法的说明:</p>
+<p><strong><code>2.24</code>更新:</strong>执行上述代码有时候会发生<strong><code>Assertion failure in -[UICollectionView _endItemAnimationsWithInvalidationContext:tentativelyForReordering:animator:]</code></strong>这样的错误。<a href="https://developer.apple.com/reference/uikit/uicollectionview/1618045-performbatchupdates?language=objc" target="_blank" rel="external">官方文档</a>对于改方法的说明:</p>
 <blockquote>
 <p><code>Animates multiple insert, delete, reload, and move operations as a group.</code></p>
 </blockquote>
@@ -146,7 +146,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="cizj7kha30001472wwwe2zmu9" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="cizj7nblw00005i2wt9wqrzlr" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
       
 
       
@@ -196,7 +196,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="cizj7khab0004472wtwx1jp91" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="cizj7nbmb00045i2w6cg93uk3" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
       
 
       
@@ -246,7 +246,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="cizj7kha60002472wiiq8tgp9" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="cizj7nbm700035i2w5loa427r" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       
@@ -295,7 +295,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="cizj7kh9y0000472wxok0j48b" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="cizj7nbm000015i2wmmfgdjkb" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
       
 
       
