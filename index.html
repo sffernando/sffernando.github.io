@@ -135,11 +135,13 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 设置header</span></div><div class="line">[<span class="keyword">self</span>.tableView beginUpdates];</div><div class="line">[<span class="keyword">self</span>.tableView setTableHeaderView: _headerView];</div><div class="line"><span class="built_in">CGRect</span> theFrame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, width, height);</div><div class="line">[<span class="built_in">UIView</span> animateWithDuration:<span class="number">.25</span>f animations:^&#123;</div><div class="line">    _headerView.frame = theFrame;</div><div class="line">&#125;];</div><div class="line">[<span class="keyword">self</span>.tableView endUpdates];</div><div class="line"></div><div class="line"><span class="comment">// 去掉header</span></div><div class="line">[<span class="keyword">self</span>.tableView beginUpdates];</div><div class="line">[<span class="keyword">self</span>.tableView setTableHeaderView: _headerView];</div><div class="line">[<span class="built_in">UIView</span> animateWithDuration:<span class="number">.25</span>f animations:^&#123;</div><div class="line">    <span class="built_in">CGRect</span> theFrame = <span class="built_in">CGRectZero</span>;</div><div class="line">    _headerView.frame = theFrame;</div><div class="line"> &#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">     <span class="keyword">self</span>.tableView.tableHeaderView = <span class="literal">nil</span>;</div><div class="line"> &#125;];</div><div class="line"> [<span class="keyword">self</span>.tableView endUpdates];</div></pre></td></tr></table></figure>
 <p>这样就可以有动画效果啦！不过，这里会有一点小问题。当去掉使用动画去掉<code>header</code>的时候，如果<code>headerView</code>上有内容，就会出现断层的情况，就是会出现动画衔接不上的状况。所以在这里我想到一个折中取巧方法，那就是使用一个假的透明背景的假<code>headerView</code>代替,这样基本上可以无缝过度衔接：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 去掉header</span></div><div class="line">[<span class="keyword">self</span>.tableView beginUpdates];</div><div class="line"><span class="keyword">self</span>.fakeTableHeader.frame = _headerView.frame;</div><div class="line">[<span class="keyword">self</span>.tableView setTableHeaderView:<span class="keyword">self</span>.fakeTableHeader];</div><div class="line">[<span class="built_in">UIView</span> animateWithDuration:<span class="number">.25</span>f animations:^&#123;</div><div class="line">    <span class="built_in">CGRect</span> theFrame = <span class="built_in">CGRectZero</span>;</div><div class="line">    _headerView.frame = theFrame;</div><div class="line">    <span class="keyword">self</span>.fakeTableHeader.frame = theFrame;</div><div class="line"> &#125; completion:^(<span class="built_in">BOOL</span> finished) &#123;</div><div class="line">     <span class="keyword">self</span>.tableView.tableHeaderView = <span class="literal">nil</span>;</div><div class="line"> &#125;];</div><div class="line"> [<span class="keyword">self</span>.tableView endUpdates];</div></pre></td></tr></table></figure>
+<p><strong><code>2.24更新:</code>上述去掉<code>header</code>的时候动画衔接不上此表述有误，其实是<code>clipsToBounds</code>值为<code>NO</code>导致的，所以将<code>clipsToBounds</code>设为<code>YES</code>就好了，没必要用假的<code>header</code></strong></p>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="cizihgmwg00011i2w8hpn9pjp" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/17/ios-tips-1/" data-id="cizj55dcp0001ru2wdvmg2vqr" class="article-share-link" data-share="baidu" data-title="iOS知识备忘">分享到</a>
       
 
       
@@ -189,7 +191,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="cizihgmwj00021i2w051j2d9i" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/14/ios-touch-event-2/" data-id="cizj55dcy0004ru2wt7jxlqgz" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(二)">分享到</a>
       
 
       
@@ -239,7 +241,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="cizihgmwq00041i2wh866g3ww" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
+        <a data-url="http://yoursite.com/2017/02/10/ios-touch-event-1/" data-id="cizj55dcr0002ru2w47b9h6um" class="article-share-link" data-share="baidu" data-title="iOS触摸事件的分发和响应链(一)">分享到</a>
       
 
       
@@ -288,7 +290,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="cizihgmwc00001i2wzr5hf0pm" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
+        <a data-url="http://yoursite.com/2016/12/24/hello-world/" data-id="cizj55dck0000ru2wrwjefl30" class="article-share-link" data-share="baidu" data-title="Hello World">分享到</a>
       
 
       
